@@ -5,7 +5,8 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon",
     "build": "postcss css/style.css -o public/style.css"
   },
   "repository": {

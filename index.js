@@ -18,13 +18,17 @@ app.use(express.json());
 //html retrieving API
 app.get('/get', async (req, res) => {
     const url = req.query.url;
-    console.log("retrieving url:", url);
 
-    const page = await browser.newPage();
-    await page.goto(url);
-    let bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
-    page.close();
-    res.send(bodyHTML);
+    if(url) {
+        console.log("retrieving url:", url);
+        const page = await browser.newPage();
+        await page.goto(url);
+        let bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
+        page.close();
+        res.send(bodyHTML);
+    } else {
+        res.status(400).send("invaid url");
+    }
 });
 
 app.use(express.static('public'));
