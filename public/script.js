@@ -21,6 +21,7 @@ function displayProduct(name, price, image) {
 }
 
 function retrieve(link) {
+    displayProduct("Working... please wait.");
     //get page html through the proxy
     $.get('get', {
         url: link

@@ -20,12 +20,17 @@ app.get('/get', async (req, res) => {
     const url = req.query.url;
 
     if(url) {
-        console.log("retrieving url:", url);
-        const page = await browser.newPage();
-        await page.goto(url);
-        let bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
-        page.close();
-        res.send(bodyHTML);
+        try{
+            console.log("retrieving url:", url);
+            const page = await browser.newPage();
+            await page.goto(url);
+            let bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
+            page.close();
+            res.send(bodyHTML);
+        } catch (e) {
+            console.error(e.stack);
+            res.status(500).send("internal server error");
+        }
     } else {
         res.status(400).send("invaid url");
     }

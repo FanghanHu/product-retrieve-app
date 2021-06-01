@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="./style.css">
     <title>Product Retrieve App</title>
 </head>
-<body class="bg-gray-100">
-    <div class="bg-white w-50 mx-auto">
-        <input type="text" id="product-url">
-        <button class="bg-green-600" id="retrieve-btn">Retrieve</button>
-        <div id="product-name"></div>
-        <div id="product-price"></div>
-        <img width="300px" alt="" id="product-image">
+<body class="bg-gray-100 p-20">
+    <div class="bg-white mx-auto rounded-lg shadow-2xl p-5 flex justify-center item-center flex-col">
+        <label for="#product-url">Please enter url here: </label>
+        <input class="border border-black rounded bg-gray-200 p-2 my-1" type="text" id="product-url">
+        <button class="bg-green-300 p-2 rounded my-1 mx-auto" id="retrieve-btn">Retrieve</button>
+
+
+        <div class="mx-auto text-lg mt-3" id="product-name"></div>
+        <div class="mx-auto text-md" id="product-price"></div>
+        <img class="mx-auto" width="300px" alt="" id="product-image">
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
