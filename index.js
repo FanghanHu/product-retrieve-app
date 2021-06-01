@@ -1,25 +1,34 @@
 const express = require("express");
-const cors_proxy = require('cors-anywhere');
+const puppeteer = require("puppeteer");
 
 const PORT = process.env.PORT || 3000;
-const PROXY_HOST = process.env.PROXY_HOST || "localhost";
-const PROXY_PORT = process.env.PROXY_PORT || 3001;
 
 const app = express();
+
+//start the puppeteer browser
+let browser;
+puppeteer.launch().then(result => {
+    browser = result;
+    console.log("Puppeteer browser started.")
+})
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static('public'));
+//html retrieving API
+app.get('/get', async (req, res) => {
+    const url = req.query.url;
+    console.log("retrieving url:", url);
 
-app.listen(PORT, () => {
-    console.log("Server is now listening on port: " + PORT);
+    const page = await browser.newPage();
+    await page.goto(url);
+    let bodyHTML = await page.evaluate(() =>  document.documentElement.outerHTML);
+    page.close();
+    res.send(bodyHTML);
 });
 
-cors_proxy.createServer({
-    originWhitelist: [], // Allow all origins
-    requireHeader: ['origin', 'x-requested-with'],
-    removeHeaders: ['cookie', 'cookie2']
-}).listen(PROXY_PORT, PROXY_HOST, function() {
-    console.log('Running CORS Anywhere on ' + PROXY_HOST + ':' + PROXY_PORT);
+app.use(express.static('public'));
+
+app.listen(PORT, async () => {
+    console.log("Server is now listening on port: " + PORT);
 });

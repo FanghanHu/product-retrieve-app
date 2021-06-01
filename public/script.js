@@ -10,8 +10,6 @@ const SHOPIFY = "SHOPIFY";
 const SNIPCART = "SNIPCART";
 const WIX = "WIX";
 
-const PROXY = "http://localhost:3001/";
-
 /**
  * show retrieved information in DOM.
  */
@@ -24,7 +22,9 @@ function displayProduct(name, price, image) {
 
 function retrieve(link) {
     //get page html through the proxy
-    $.get(PROXY + link).then(html => {
+    $.get('get', {
+        url: link
+    }).then(html => {
         const platform = findPlatform(html);
         console.log("platform: ", platform);
 
@@ -45,6 +45,9 @@ function retrieve(link) {
 }
 
 function retriveShopify(link, html) {
+    /**
+     * Get information from shopify json API
+     */
     const url = new URL(link);
     //find currency used in store init script
     const currency = html.match(/Shopify.currency.*"active".*?"(.*?)"/)[1];
@@ -66,6 +69,9 @@ function retriveShopify(link, html) {
 }
 
 function retriveSnipcart(html) {
+    /**
+     * Get inforamtion from the .snipcart-add-item button
+     */
     const dom = new DOMParser().parseFromString(html, "text/html");
     const addCartBtn = dom.querySelector(".snipcart-add-item");
     const name = addCartBtn.getAttribute("data-item-name");
@@ -78,15 +84,21 @@ function retriveSnipcart(html) {
         let multiCurrency = "";
         for(const currency in price) {
             if(multiCurrency.length) multiCurrency += ' or ';
-            multiCurrency += `${price[currency]} ${currency}`;
+            multiCurrency += `${price[currency]} ${currency.toUpperCase()}`;
         }
         price = multiCurrency;
+    } else {
+        //use a dollar sign by default
+        price = "$" + price;
     }
 
     displayProduct(name, price, image);
 }
 
 function retirveWix(html) {
+    /**
+     *  Get information from meta data.
+     */
     const dom = new DOMParser().parseFromString(html, "text/html");
     const title = dom.querySelector("meta[property='og:title']").getAttribute("content");
     const price = dom.querySelector("meta[property='product:price:amount']").getAttribute("content");
@@ -98,12 +110,12 @@ function retirveWix(html) {
 
 /**
  * look for signature text in the plain html text, 
- * and figure out which ecommerce service provider this website is using.
+ * and figure out which ecommerce platform this website is using.
  */
 function findPlatform(html) {
     if(html.includes("wix-warmup-data")) {
         return WIX;
-    } else if(html.includes("shopify.shop")) {
+    } else if(html.includes("Shopify.shop")) {
         return SHOPIFY;
     } else if(html.includes("snipcart-add-item")) {
         return SNIPCART;

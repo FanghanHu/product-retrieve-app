@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/FanghanHu/product-retrieve-app#readme",
   "dependencies": {
-    "cors-anywhere": "^0.4.4",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "puppeteer": "^10.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
