@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon",
-    "build": "postcss css/style.css -o public/style.css"
+    "build": "cross-env NODE_ENV=production tailwindcss build css/style.css -o public/style.css"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/FanghanHu/product-retrieve-app#readme",
   "dependencies": {
     "autoprefixer": "^10.2.6",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "postcss": "^8.3.0",
     "postcss-cli": "^8.3.1",

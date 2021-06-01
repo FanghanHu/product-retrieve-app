@@ -1,3 +1,5 @@
 {
-	"exec": "npm run build && node index.js"
+    
+	"exec": "npm run build && node index.js",
+	"ext": "js, json, html"
 }
